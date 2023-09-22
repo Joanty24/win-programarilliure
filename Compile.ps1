@@ -1,5 +1,5 @@
 $OFS = "`r`n"
-$scriptname = "winutil.ps1"
+$scriptname = "wpll.ps1"
 
 if (Test-Path -Path "$($scriptname)")
 {
@@ -14,7 +14,7 @@ Write-output '
 ################################################################################################################
 ' | Out-File ./$scriptname -Append -Encoding ascii
 
-(Get-Content .\scripts\start.ps1).replace('#{replaceme}',"$(get-date -format yyMMdd_HHmm)-Joan") | Out-File ./$scriptname -Append -Encoding ascii
+(Get-Content .\scripts\start.ps1).replace('#{replaceme}',"$(get-date -format yyMMdd_HHmm)") | Out-File ./$scriptname -Append -Encoding ascii
 
 Get-ChildItem .\functions -Recurse -File | ForEach-Object {
     Get-Content $psitem.FullName | Out-File ./$scriptname -Append -Encoding ascii

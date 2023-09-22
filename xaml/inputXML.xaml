@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="{MainBackgroundColor}"
         WindowStartupLocation="CenterScreen"
-        Title="Open Windows Utility" Height="670" Width="1050">
+        Title="Open Windows Utility" Height="650" Width="1050">
     <Window.Resources>
         <Style TargetType="ComboBox">
             <Setter Property="Foreground" Value="{ComboBoxForegroundColor}"/>
