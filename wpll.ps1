@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 230923_0035
+    Version        : 230923_0046
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -19,7 +19,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "230923_0035"
+$sync.version = "230923_0046"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -1956,7 +1956,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                                 <Label Content="Seguretat" FontSize="16" Margin="5,0"/>
                                 <CheckBox Name="WPFInstallclamwin" Content="ClamWin" Margin="5,0" ToolTip="Antivirus"/>
                                 <CheckBox Name="WPFInstalleraser" Content="Eraser Classic" Margin="5,0" ToolTip="Elimina fitxers sense deixar rastre"/>
-                                <CheckBox Name="WPFInstallchecksum" Content="RHash" Margin="5,0" ToolTip="Comprovador de hash"/>
+                                <CheckBox Name="WPFInstallchecksum" Content="OpenHashTab" Margin="5,0" ToolTip="Comprovador de hash"/>
                                 <CheckBox Name="WPFInstallkeepass" Content="KeePassXC" Margin="5,0" ToolTip="desador de contrassenyes"/>
                                 <CheckBox Name="WPFInstallsandbox" Content="Sandbobie Plus" Margin="5,0" ToolTip="Permet executar programes de manera segura"/>
                                 <CheckBox Name="WPFInstallportmaster" Content="Portmaster" Margin="5,0" ToolTip="Gestor de transit d''internet"/>
@@ -2084,7 +2084,7 @@ $sync.configs.applications = '{
     "winget":"Eraser.Eraser"
   },
   "WPFInstallchecksum":{
-    "winget":"RHash.RHash"
+    "winget":"namazso.OpenHashTab"
   },
   "WPFInstallkeepass":{
     "winget":"KeePassXCTeam.KeePassXC"

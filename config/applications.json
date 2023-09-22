@@ -96,7 +96,7 @@
     "winget":"Eraser.Eraser"
   },
   "WPFInstallchecksum":{
-    "winget":"RHash.RHash"
+    "winget":"namazso.OpenHashTab"
   },
   "WPFInstallkeepass":{
     "winget":"KeePassXCTeam.KeePassXC"

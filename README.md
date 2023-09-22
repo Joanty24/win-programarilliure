@@ -8,4 +8,74 @@ Si no funciona prova amb:
 ```
 iwr -useb https://wpll.joansolana.com/wpll.ps1 | iex
 ```
-Aquesta utilitat forma part de la part practica del meu Treball De Recerca.
+Aquesta utilitat forma part de la part practica del meu Treball De Recerca.<br><br>
+
+# Llista dels programes i categories que s'inclouen
+
+## Navegadors
+Firefox  
+Librewolf  
+Chromium (un-googled)  
+Brave  
+
+## Oficina
+ONLYOFFICE  
+LibreOffice  
+WinMerge  
+Scribus  
+Sumatra PDF  
+Joplin  
+
+## Multimedia
+VLC  
+OBS Studio  
+Spotube  
+Cider  
+Xtreme Download Manager  
+### Editors
+#### Audio
+Audacity  
+#### Imatge
+GIMP  
+Krita  
+Darktable  
+Inkscape  
+Caesium  
+#### Video
+Kdenlive  
+Handbrake  
+#### Mes
+Blender  
+FreeCAD  
+
+## Editors de codi
+VSCodium  
+Notepad++  
+
+## Jocs
+Playnite  
+Heroic Games Launcher  
+itch.io  
+
+## Seguretat
+ClamWin  
+Eraser Classic  
+OpenHashTab  
+KeePassXC  
+Sandboxie Plus  
+### Internet
+Portmaster  
+Wireshark  
+
+## Utilitats
+### Fitxers
+7-Zip  
+PeaZip  
+BleachBit  
+Double Commander  
+WinDirStat  
+Bulk Crap Uninstaller  
+### Altres
+Rufus  
+RustDesk  
+AutoHotkey  
