@@ -8,6 +8,8 @@ Si no funciona prova amb:
 ```
 iwr -useb https://wpll.joansolana.com/wpll.ps1 | iex
 ```
+Tambe pots descarregar la utilitat en format .exe des de <a href="https://tdr.joansolana.com" target="_blank">la pagina web del projecte</a>.  <br><br>
+
 Aquesta utilitat forma part de la part practica del meu Treball De Recerca.<br><br>
 
 # Llista dels programes i categories que s'inclouen
