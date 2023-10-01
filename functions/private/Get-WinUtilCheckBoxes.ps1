@@ -36,6 +36,34 @@ Function Get-WinUtilCheckBoxes {
             }
         }
     }
+    
+    if($Group -eq "WPFTweaks"){
+        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPF*Tweaks*"}
+        $CheckBoxes = $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter}
+        Foreach ($CheckBox in $CheckBoxes){
+            if($CheckBox.value.ischecked -eq $true){
+                $Output.Add($Checkbox.Name)
+                
+                if ($uncheck -eq $true){
+                    $CheckBox.value.ischecked = $false
+                }
+            }
+        }
+    }
+
+    if($Group -eq "WPFFeature"){
+        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPF*Feature*"}
+        $CheckBoxes = $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter}
+        Foreach ($CheckBox in $CheckBoxes){
+            if($CheckBox.value.ischecked -eq $true){
+                $Output.Add($Checkbox.Name)
+                
+                if ($uncheck -eq $true){
+                    $CheckBox.value.ischecked = $false
+                }
+            }
+        }
+    }
 
     Write-Output $($Output | Select-Object -Unique)
 }
