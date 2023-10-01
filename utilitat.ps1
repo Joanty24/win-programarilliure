@@ -1,1 +1,0 @@
-iwr -useb https://wpll.joansolana.com/wpll.ps1 | iex
