@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231001_1350
+    Version        : 231001_1400
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -19,7 +19,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231001_1350"
+$sync.version = "231001_1400"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
