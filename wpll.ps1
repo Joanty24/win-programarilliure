@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 230923_0046
+    Version        : 231001_1412
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -19,7 +19,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "230923_0046"
+$sync.version = "231001_1412"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -1950,9 +1950,9 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                                 <CheckBox Name="WPFInstallcodium" Content="VSCodium" Margin="5,0" ToolTip="Editor de codi complet"/>
                                 <CheckBox Name="WPFInstallnotepad" Content="Notepad++" Margin="5,0" ToolTip="Editor de codi simple"/>
                                 <Label Content="Jocs" FontSize="16" Margin="5,0"/>
-                                <CheckBox Name="WPFInstallplaynite" Content="Playnite" Margin="5,0" ToolTip="Llan?ador de jocs"/>
-                                <CheckBox Name="WPFInstallheroic" Content="Heroic Games Launcher" Margin="5,0" ToolTip="Llan?ador de jocs"/>
-                                <CheckBox Name="WPFInstallitchio" Content="itch.io" Margin="5,0" ToolTip="Llan?ador de jocs"/>
+                                <CheckBox Name="WPFInstallplaynite" Content="Playnite" Margin="5,0" ToolTip="Llan??ador de jocs"/>
+                                <CheckBox Name="WPFInstallheroic" Content="Heroic Games Launcher" Margin="5,0" ToolTip="Llan??ador de jocs"/>
+                                <CheckBox Name="WPFInstallitchio" Content="itch.io" Margin="5,0" ToolTip="Llan??ador de jocs"/>
                                 <Label Content="Seguretat" FontSize="16" Margin="5,0"/>
                                 <CheckBox Name="WPFInstallclamwin" Content="ClamWin" Margin="5,0" ToolTip="Antivirus"/>
                                 <CheckBox Name="WPFInstalleraser" Content="Eraser Classic" Margin="5,0" ToolTip="Elimina fitxers sense deixar rastre"/>
