@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231015_1556
+    Version        : 231015_1610
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -19,7 +19,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231015_1556"
+$sync.version = "231015_1610"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -227,12 +227,11 @@ function Install-WinUtilChoco {
         }
     
         Write-Host "Seems Chocolatey is not installed, installing now?"
-        #Let user decide if he wants to install Chocolatey
-        #$confirmation = Read-Host "Are you Sure You Want To Proceed:(y/n)"
-        #if ($confirmation -eq 'y') {
-        #    Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -ErrorAction Stop
-        #    powershell choco feature enable -n allowGlobalConfirmation
-        #}
+        Let user decide if he wants to install Chocolatey
+        if ('n' -eq 'y') {
+            Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -ErrorAction Stop
+            powershell choco feature enable -n allowGlobalConfirmation
+        }
     }
     Catch{
         throw [ChocoFailedInstall]::new('Failed to install')
