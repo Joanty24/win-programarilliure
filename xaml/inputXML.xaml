@@ -295,7 +295,11 @@
                                 <CheckBox Name="WPFInstallrustdesk" Content="RustDesk" Margin="5,0" ToolTip="Escriptori remot"/>
                                 <CheckBox Name="WPFInstallautohotkey" Content="AutoHotKey" Margin="5,0" ToolTip="Scrips de teclat"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2" Margin="8">
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Margin="8">
+                                <Label Content="Shortcuts" />
+                                    <Button Name="WPFWinUtilShortcut" Content="Create WinUtil Shortcut" HorizontalAlignment = "Left" Margin="5,0" Padding="20,5" Width="300"/>
+                            </StackPanel>
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2" Margin="8">
                                 <TextBlock Padding="5">
                                     Passa el punter per sobre dels noms per obtindre una descripcio.
                                 </TextBlock>

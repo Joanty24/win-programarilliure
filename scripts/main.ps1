@@ -33,6 +33,12 @@ $sync.runspace.Open()
 
         WingetFailedInstall($Message) : base($Message) {}
     }
+    
+    class ChocoFailedInstall : Exception {
+        [string] $additionalData
+
+        ChocoFailedInstall($Message) : base($Message) {}
+    }
 
     class GenericException : Exception {
         [string] $additionalData
@@ -44,7 +50,12 @@ $sync.runspace.Open()
 
 $inputXML = $inputXML -replace 'mc:Ignorable="d"', '' -replace "x:N", 'N' -replace '^<Win.*', '<Window'
 
-$ctttheme = 'Classic'
+if ((Get-WinUtilToggleStatus WPFToggleDarkMode) -eq $True){
+    $ctttheme = 'Matrix'
+}
+Else{
+    $ctttheme = 'Classic'
+}
 
 $inputXML = Set-WinUtilUITheme -inputXML $inputXML -themeName $ctttheme
 
@@ -62,6 +73,7 @@ catch [System.Management.Automation.MethodInvocationException] {
     }
 }
 catch {
+    # If it broke some other way <img draggable="false" role="img" class="emoji" alt="😀" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/1f600.svg">
     Write-Host "Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed."
 }
 
@@ -119,6 +131,14 @@ Invoke-WPFRunspace -ScriptBlock {
 
 Invoke-WPFFormVariables
 
+try{
+    Install-WinUtilChoco
+}
+Catch [ChocoFailedInstall]{
+    Write-Host "==========================================="
+    Write-Host "--    Chocolatey failed to install      ---"
+    Write-Host "==========================================="
+}
 $sync["Form"].title = $sync["Form"].title + " " + $sync.version
 $sync["Form"].Add_Closing({
     $sync.runspace.Dispose()
