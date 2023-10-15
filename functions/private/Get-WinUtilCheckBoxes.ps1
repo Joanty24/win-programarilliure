@@ -22,7 +22,7 @@ Function Get-WinUtilCheckBoxes {
     $Output = New-Object System.Collections.Generic.List[System.Object]
 
     if($Group -eq "WPFInstall"){
-        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPFInstall*"}
+        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPF*Install*"}
         $CheckBoxes = $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter}
         Foreach ($CheckBox in $CheckBoxes){
             if($CheckBox.value.ischecked -eq $true){

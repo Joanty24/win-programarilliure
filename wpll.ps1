@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231015_1610
+    Version        : 231015_1619
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -19,7 +19,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231015_1610"
+$sync.version = "231015_1619"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -52,7 +52,7 @@ Function Get-WinUtilCheckBoxes {
     $Output = New-Object System.Collections.Generic.List[System.Object]
 
     if($Group -eq "WPFInstall"){
-        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPFInstall*"}
+        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPF*Install*"}
         $CheckBoxes = $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter}
         Foreach ($CheckBox in $CheckBoxes){
             if($CheckBox.value.ischecked -eq $true){
@@ -380,7 +380,7 @@ Function Invoke-WinUtilCurrentSystem {
         $Sync.InstalledPrograms = winget list -s winget | Select-Object -skip 3 | ConvertFrom-String -PropertyNames "Name", "Id", "Version", "Available" -Delimiter '\s{2,}'
         [Console]::OutputEncoding = $originalEncoding
 
-        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPFInstall*"}
+        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPF*Install*"}
         $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter} | ForEach-Object {
             $dependencies = @($sync.configs.applications.$($psitem.Key).winget -split ";")
 

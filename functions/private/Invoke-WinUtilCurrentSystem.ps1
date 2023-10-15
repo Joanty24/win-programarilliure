@@ -24,7 +24,7 @@ Function Invoke-WinUtilCurrentSystem {
         $Sync.InstalledPrograms = winget list -s winget | Select-Object -skip 3 | ConvertFrom-String -PropertyNames "Name", "Id", "Version", "Available" -Delimiter '\s{2,}'
         [Console]::OutputEncoding = $originalEncoding
 
-        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPFInstall*"}
+        $filter = Get-WinUtilVariables -Type Checkbox | Where-Object {$psitem -like "WPF*Install*"}
         $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter} | ForEach-Object {
             $dependencies = @($sync.configs.applications.$($psitem.Key).winget -split ";")
 
