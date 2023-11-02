@@ -172,14 +172,10 @@ function Get-OSInfo {
         # Get architecture details of the OS (not the processor)
         # Get only the numbers
         $architecture = ($osDetails.OSArchitecture -replace "[^\d]").Trim()
-        # Get only the numbers
-        $architecture = ($osDetails.OSArchitecture -replace "[^\d]").Trim()
 
         # If 32-bit or 64-bit replace with x32 and x64
         if ($architecture -eq "32") {
-        if ($architecture -eq "32") {
             $architecture = "x32"
-        } elseif ($architecture -eq "64") {
         } elseif ($architecture -eq "64") {
             $architecture = "x64"
         }
@@ -690,12 +686,6 @@ function Install-Prerequisite {
             throw
         }
 
-        if ($_.Exception.Message -match '0x80073D02') {
-            # If resources in use exception, fail immediately
-            Handle-Error $_
-            throw
-        }
-
         try {
             $url = $AlternateUrl
 
@@ -1098,7 +1088,6 @@ try {
     if (Get-WingetStatus -eq $true) {
         Write-Output "winget is installed and working now, you can go ahead and use it."
     } else {
-        Write-Warning "winget is installed but is not detected as a command. Try using winget now. If it doesn't work, wait about 1 minute and try again (it is sometimes delayed). Also try restarting your computer."
         Write-Warning "winget is installed but is not detected as a command. Try using winget now. If it doesn't work, wait about 1 minute and try again (it is sometimes delayed). Also try restarting your computer."
         Write-Warning "If you restart your computer and the command still isn't recognized, please read the Troubleshooting section`nof the README: https://github.com/asheroto/winget-install#troubleshooting`n"
         Write-Warning "Make sure you have the latest version of the script by running this command: $PowerShellGalleryName -CheckForUpdate"
