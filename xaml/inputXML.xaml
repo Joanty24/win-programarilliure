@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="{MainBackgroundColor}"
         WindowStartupLocation="CenterScreen"
-        Title="Open Windows Utility" Height="550" Width="1050">
+        Title="Open Windows Utility" Height="500" Width="1025">
     <Window.Resources>
         <Style TargetType="ComboBox">
             <Setter Property="Foreground" Value="{ComboBoxForegroundColor}"/>
@@ -227,19 +227,19 @@
                                 <RowDefinition Height=".10*"/>
                                 <RowDefinition Height=".90*"/>
                             </Grid.RowDefinitions>
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Margin="8">
-                                <Button Name="WPFinstall" Content=" Instal.la Seleccio " Margin="7"/>
-                                <Button Name="WPFInstallUpgrade" Content=" Actualitza Tot " Margin="7"/>
-                                <Button Name="WPFuninstall" Content=" Desinstal.la Seleccio " Margin="7"/>
-                                <Button Name="WPFGetInstalled" Content=" Instal.lats Ara " Margin="7"/>
-                                <Button Name="WPFclearWinget" Content=" Esclarir Seleccio " Margin="7"/>
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                                <Button Name="WPFinstall" Content=" Instal.la Seleccio " Margin="5"/>
+                                <Button Name="WPFInstallUpgrade" Content=" Actualitza Tot " Margin="5"/>
+                                <Button Name="WPFuninstall" Content=" Desinstal.la Seleccio " Margin="5"/>
+                                <Button Name="WPFGetInstalled" Content=" Instal.lats Ara " Margin="5"/>
+                                <Button Name="WPFclearWinget" Content=" Esclarir Seleccio " Margin="5"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2" Margin="8">
-                                <TextBlock Padding="5">
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2" Margin="5">
+                                <TextBlock Padding="4">
                                     Passa el punter per sobre dels noms per obtindre una descripcio.
                                 </TextBlock>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="0" Margin="8">
+                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="0" Margin="5">
                                 <Label Content="Navegadors" FontSize="16" Margin="5,0"/>
                                 <CheckBox Name="WPFInstallfirefox" Content="Firefox" Margin="5,0" ToolTip="Navegador Mozilla Firefox"/>
                                 <CheckBox Name="WPFInstalllibrewolf" Content="Librewolf" Margin="5,0" ToolTip="Navegador basat en Firefox amb bloquejador d'anuncis centrat en la privacitat"/>
@@ -253,7 +253,7 @@
                                 <CheckBox Name="WPFInstallsumatra" Content="Sumatra PDF" Margin="5,0" ToolTip="Visualitzador PDF"/>
                                 <CheckBox Name="WPFInstalljoplin" Content="Joplin" Margin="5,0" ToolTip="Notes"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="1" Margin="8">
+                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="1" Margin="5">
                                 <Label Content="Multimedia" FontSize="16" Margin="5,0"/>
                                 <CheckBox Name="WPFInstallvlc" Content="VLC" Margin="5,0" ToolTip="Reproductor multimedia"/>
                                 <CheckBox Name="WPFInstallobs" Content="OBS Studio" Margin="5,0" ToolTip="Capturador de pantalla"/>
@@ -271,7 +271,7 @@
                                 <CheckBox Name="WPFInstallblender" Content="Blender" Margin="5,0" ToolTip="Creador multimedia"/>
                                 <CheckBox Name="WPFInstallfreecad" Content="FreeCAD" Margin="5,0" ToolTip="CAD lliure"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="2" Margin="8">
+                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="2" Margin="5">
                                 <Label Content="Programacio" FontSize="16" Margin="5,0"/>
                                 <CheckBox Name="WPFInstallcodium" Content="VSCodium" Margin="5,0" ToolTip="Editor de codi complet"/>
                                 <CheckBox Name="WPFInstallnotepad" Content="Notepad++" Margin="5,0" ToolTip="Editor de codi simple"/>
@@ -288,7 +288,7 @@
                                 <CheckBox Name="WPFInstallportmaster" Content="Portmaster" Margin="5,0" ToolTip="Gestor de transit d'internet"/>
                                 <CheckBox Name="WPFInstallwireshark" Content="Wireshark" Margin="5,0" ToolTip="Visualitzador del transit d'internet"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="3" Margin="8">
+                            <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="3" Margin="5">
                                 <Label Content="Utilitats" FontSize="16" Margin="5,0"/>
                                 <CheckBox Name="WPFInstallzip" Content="7-Zip" Margin="5,0" ToolTip="Descompressor d'arxius"/>
                                 <CheckBox Name="WPFInstallpeazip" Content="PeaZip" Margin="5,0"  ToolTip="Descompressor d'arxius"/>
