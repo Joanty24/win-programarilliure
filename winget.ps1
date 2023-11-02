@@ -1,10 +1,10 @@
 <#PSScriptInfo
 
-.VERSION 3.0.0
+.VERSION 3.2.3
 
 .GUID 3b581edb-5d90-4fa1-ba15-4f2377275463
 
-.AUTHOR asheroto, 1ckov, MisterZeus, ChrisTitusTech
+.AUTHOR asheroto, 1ckov, MisterZeus, ChrisTitusTech, uffemcev
 
 .COMPANYNAME asheroto
 
@@ -29,6 +29,14 @@
 [Version 2.1.0] - Added alternate method/URL for dependencies in case the main URL is down. Fixed licensing issue when winget is installed on Server 2022.
 [Version 2.1.1] - Switched primary/alternate methods. Added Cleanup function to avoid errors when cleaning up temp files. Added output of URL for alternate method. Suppressed Add-AppxProvisionedPackage output. Improved success message. Improved verbiage. Improve PS script comments. Added check if the URL is empty. Moved display of URL beneath the check.
 [Version 3.0.0] - Major changes. Added OS version detection checks - detects OS version, release ID, ensures compatibility. Forces older file installation for Server 2022 to avoid issues after installing. Added DebugMode, DisableCleanup, Force. Renamed CheckForUpdates to CheckForUpdate. Improved output. Improved error handling. Improved comments. Improved code readability. Moved CheckForUpdate into function. Added PowerShellGalleryName. Renamed Get-OSVersion to Get-OSInfo. Moved architecture detection into Get-OSInfo. Renamed Get-NewestLink to Get-WingetDownloadUrl. Have Get-WingetDownloadUrl not get preview releases.
+[Version 3.0.1] - Updated Get-OSInfo function to fix issues when used on non-English systems. Improved error handling of "resources in use" error.
+[Version 3.0.2] - Added winget registration command for Windows 10 machines.
+[Version 3.1.0] - Added support for one-line installation with irm and iex compatible with $Force session variable. Added UpdateSelf command to automatically update the script to the latest version. Created short URL asheroto.com/winget.
+[Version 3.1.1] - Changed winget register command to run on all OS versions.
+[Version 3.2.0] - Added -ForceClose logic to relaunch the script in conhost.exe and automatically end active processes associated with winget that could interfere with the installation. Improved verbiage on winget already installed.
+[Version 3.2.1] - Fixed minor glitch when using -Version or -Help parameters.
+[Version 3.2.2] - Improved script exit functionality.
+[Version 3.2.3] - Improved -ForceClose window handling with x86 PowerShell process.
 
 #>
 
@@ -49,6 +57,8 @@ This function should be run with administrative privileges.
     Disables cleanup of the script and prerequisites after installation.
 .PARAMETER Force
     Ensures installation of winget and its dependencies, even if already present.
+.PARAMETER UpdateSelf
+    Updates the script to the latest version on PSGallery.
 .PARAMETER CheckForUpdate
     Checks if there is an update available for the script.
 .PARAMETER Version
@@ -56,23 +66,25 @@ This function should be run with administrative privileges.
 .PARAMETER Help
     Displays the full help information for the script.
 .NOTES
-	Version      : 3.0.0
+	Version      : 3.2.3
 	Created by   : asheroto
 .LINK
 	Project Site: https://github.com/asheroto/winget-install
 #>
 [CmdletBinding()]
 param (
-    [switch]$Version,
-    [switch]$Help,
-    [switch]$CheckForUpdate,
-    [switch]$DisableCleanup,
     [switch]$DebugMode,
-    [switch]$Force
+    [switch]$DisableCleanup,
+    [switch]$Force,
+    [switch]$ForceClose,
+    [switch]$CheckForUpdate,
+    [switch]$UpdateSelf,
+    [switch]$Version,
+    [switch]$Help
 )
 
 # Version
-$CurrentVersion = '3.0.0'
+$CurrentVersion = '3.2.3'
 $RepoOwner = 'asheroto'
 $RepoName = 'winget-install'
 $PowerShellGalleryName = 'winget-install'
@@ -158,12 +170,13 @@ function Get-OSInfo {
         $nameValue = $osDetails.Caption
 
         # Get architecture details of the OS (not the processor)
-        $architecture = $osDetails.OSArchitecture
+        # Get only the numbers
+        $architecture = ($osDetails.OSArchitecture -replace "[^\d]").Trim()
 
         # If 32-bit or 64-bit replace with x32 and x64
-        if ($architecture -eq "32-bit") {
+        if ($architecture -eq "32") {
             $architecture = "x32"
-        } elseif ($architecture -eq "64-bit") {
+        } elseif ($architecture -eq "64") {
             $architecture = "x64"
         }
 
@@ -198,7 +211,7 @@ function Get-OSInfo {
         return $result
     } catch {
         Write-Error "Unable to get OS version details.`nError: $_"
-        exit 1
+        ExitWithDelay 1
     }
 }
 
@@ -256,24 +269,59 @@ function CheckForUpdate {
 
     $Data = Get-GitHubRelease -Owner $RepoOwner -Repo $RepoName
 
+    Write-Output ""
+    Write-Output ("Repository:       {0,-40}" -f "https://github.com/$RepoOwner/$RepoName")
+    Write-Output ("Current Version:  {0,-40}" -f $CurrentVersion)
+    Write-Output ("Latest Version:   {0,-40}" -f $Data.LatestVersion)
+    Write-Output ("Published at:     {0,-40}" -f $Data.PublishedDateTime)
+
     if ($Data.LatestVersion -gt $CurrentVersion) {
-        Write-Output "`nA new version of $RepoName is available.`n"
-        Write-Output "Current version: $CurrentVersion."
-        Write-Output "Latest version: $($Data.LatestVersion)."
-        Write-Output "Published at: $($Data.PublishedDateTime).`n"
-        Write-Output "You can download the latest version from https://github.com/$RepoOwner/$RepoName/releases`n"
+        Write-Output ("Status:           {0,-40}" -f "A new version is available.")
+        Write-Output "`nOptions to update:"
+        Write-Output "- Download latest release: https://github.com/$RepoOwner/$RepoName/releases"
         if ($PowerShellGalleryName) {
-            Write-Output "Or you can run the following command to update:"
-            Write-Output "Install-Script $PowerShellGalleryName -Force`n"
+            Write-Output "- Run: $RepoName -UpdateSelf"
+            Write-Output "- Run: Install-Script $PowerShellGalleryName -Force"
         }
     } else {
-        Write-Output "`n$RepoName is up to date.`n"
-        Write-Output "Current version: $CurrentVersion."
-        Write-Output "Latest version: $($Data.LatestVersion)."
-        Write-Output "Published at: $($Data.PublishedDateTime)."
-        Write-Output "`nRepository: https://github.com/$RepoOwner/$RepoName/releases`n"
+        Write-Output ("Status:           {0,-40}" -f "Up to date.")
     }
     exit 0
+}
+
+function UpdateSelf {
+    try {
+        # Get PSGallery version of script
+        $psGalleryScriptVersion = (Find-Script -Name $PowerShellGalleryName).Version
+
+        # If the current version is less than the PSGallery version, update the script
+        if ($CurrentVersion -lt $psGalleryScriptVersion) {
+            Write-Output "Updating script to version $psGalleryScriptVersion..."
+
+            # Install NuGet PackageProvider if not already installed
+            if (-not (Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue)) {
+                Install-PackageProvider -Name "NuGet" -Force
+            }
+
+            # Trust the PSGallery if not already trusted
+            $repo = Get-PSRepository -Name 'PSGallery'
+            if ($repo.InstallationPolicy -ne 'Trusted') {
+                Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+            }
+
+            # Update the script
+            Install-Script $PowerShellGalleryName -Force
+
+            Write-Output "Script updated to version $psGalleryScriptVersion."
+            exit 0
+        } else {
+            Write-Output "Script is already up to date."
+            exit 0
+        }
+    } catch {
+        Write-Output "An error occurred: $_"
+        exit 1
+    }
 }
 
 function Write-Section($text) {
@@ -455,7 +503,7 @@ function Handle-Error {
     } elseif ($ErrorRecord.Exception.Message -match '0x80073D02') {
         # Stop execution and return the ErrorRecord so that the calling try/catch block throws the error
         Write-Warning "Resources modified are in-use. Try closing Windows Terminal / PowerShell / Command Prompt and try again."
-        Write-Warning "If the problem persists, restart your computer."
+        Write-Warning "Windows Terminal sometimes has trouble installing winget. If you are using Windows Terminal and the problem persists, run the script with the -ForceClose parameter which will relaunch the script in conhost.exe and automatically end active processes associated with winget that could interfere with the installation. Please note that using the -ForceClose parameter will close the PowerShell window and could break custom scripts that rely on the current PowerShell session."
         return $ErrorRecord
     } elseif ($ErrorRecord.Exception.Message -match 'Unable to connect to the remote server') {
         Write-Warning "Cannot connect to the Internet to download the required files."
@@ -624,12 +672,20 @@ function Install-Prerequisite {
             throw
         }
 
-        Write-Output "URL: ${url}"
-        Write-Output "`nInstalling ${arch} ${Name}..."
-        Add-AppxPackage $url -ErrorAction Stop
+        if ($DebugMode) {
+            Write-Output "URL: ${url}`n"
+        }
+        Write-Output "Installing ${arch} ${Name}..."
+        if ($ForceClose) { Add-AppxPackage $url -ErrorAction Stop -ForceApplicationShutdown } else { Add-AppxPackage $url -ErrorAction Stop }
         Write-Output "`n$Name installed successfully."
     } catch {
         # Alternate method
+        if ($_.Exception.Message -match '0x80073D02') {
+            # If resources in use exception, fail immediately
+            Handle-Error $_
+            throw
+        }
+
         try {
             $url = $AlternateUrl
 
@@ -652,7 +708,7 @@ function Install-Prerequisite {
                     Write-Output "URL: $($url)`n"
                 }
                 Write-Output "Installing ${arch} ${Name}..."
-                Add-AppxPackage $url -ErrorAction Stop
+                if ($ForceClose) { Add-AppxPackage $url -ErrorAction Stop -ForceApplicationShutdown } else { Add-AppxPackage $url -ErrorAction Stop }
                 Write-Output "`n$Name installed successfully."
             }
 
@@ -705,7 +761,7 @@ function Install-Prerequisite {
                 # Install
                 Get-ChildItem -Path $XamlAppxPath -Filter *.appx | ForEach-Object {
                     if ($DebugMode) { Write-Output "Installing appx Package: $($_.Name)" }
-                    Add-AppxPackage $_.FullName -ErrorAction Stop
+                    if ($ForceClose) { Add-AppxPackage $_.FullName -ErrorAction Stop -ForceApplicationShutdown } else { Add-AppxPackage $_.FullName -ErrorAction Stop }
                 }
                 Write-Output "`nUI.Xaml installed successfully."
 
@@ -747,47 +803,177 @@ function Install-Prerequisite {
     }
 }
 
+function Get-CurrentProcess {
+    <#
+        .SYNOPSIS
+            Retrieves the current PowerShell process information.
+
+        .DESCRIPTION
+            The Get-CurrentProcess function identifies the current PowerShell process by temporarily changing the console window title. It then filters the list of running processes to find the one with the matching window title. The function returns a custom object containing the Name and Id of the current process.
+
+        .EXAMPLE
+            PS C:\> $result = Get-CurrentProcess
+            PS C:\> Write-Output $result
+
+            This example demonstrates how to call the Get-CurrentProcess function and store its output in a variable named $result. The output is then displayed using Write-Output.
+
+        .NOTES
+            The function temporarily changes the console window title. Ensure no other scripts or processes are dependent on the window title during execution. The function uses a 1-second sleep to allow time for the window title change to take effect. This may vary based on system performance.
+    #>
+    $oldTitle = $host.ui.RawUI.WindowTitle
+    $tempTitle = ([Guid]::NewGuid())
+    $host.ui.RawUI.WindowTitle = $tempTitle
+    Start-Sleep 1
+    $currentProcess = Get-Process | Where-Object { $_.MainWindowTitle -eq $tempTitle }
+    $currentProcess = [PSCustomObject]@{
+        Name = $currentProcess.Name
+        Id   = $currentProcess.Id
+    }
+    $host.ui.RawUI.WindowTitle = $oldTitle
+    return $currentProcess
+}
+
+function ExitWithDelay {
+    <#
+        .SYNOPSIS
+            Exits the script with a specified exit code after a 10-second delay.
+
+        .DESCRIPTION
+            This function takes an exit code as an argument, waits for 10 seconds, and then exits the script with the given exit code.
+
+        .PARAMETER ExitCode
+            The exit code to use when exiting the script.
+
+        .EXAMPLE
+            ExitWithDelay -ExitCode 1
+            Waits for 10 seconds and then exits the script with an exit code of 1.
+        .NOTES
+            Use this function to introduce a delay before exiting the script, allowing time for any cleanup or logging activities.
+    #>
+
+    param (
+        [int]$ExitCode,
+        [int]$Seconds = 10
+    )
+
+    Write-Output "`nWaiting for $Seconds seconds before exiting..."
+    Start-Sleep -Seconds $Seconds
+    exit $ExitCode
+}
+
+function Import-GlobalVariable {
+    <#
+        .SYNOPSIS
+        This function checks if a specified global variable exists and imports its value into a script scope variable of the same name.
+
+        .DESCRIPTION
+        The Import-GlobalVariable function allows you to specify the name of a variable. It checks if a global variable with that name exists, and if it does, it imports its value into a script scope variable with the same name.
+
+        .PARAMETER VariableName
+        The name of the variable to check and import if it exists in the global scope.
+
+    #>
+
+    [CmdletBinding()]
+    param(
+        [string]$VariableName
+    )
+
+    # Check if the specified global variable exists; if yes, import its value
+    try {
+        $globalValue = Get-Variable -Name $VariableName -ValueOnly -Scope Global -ErrorAction Stop
+        Set-Variable -Name $VariableName -Value $globalValue -Scope Script
+    } catch {
+        # If the variable does not exist, do nothing
+    }
+}
+
 # ============================================================================ #
 # Initial checks
 # ============================================================================ #
 
-# Check for updates if -CheckForUpdate is specified
-if ($CheckForUpdate) {
-    CheckForUpdate -RepoOwner $RepoOwner -RepoName $RepoName -CurrentVersion $CurrentVersion -PowerShellGalleryName $PowerShellGalleryName
-}
+# Use global variables if specified by user
+Import-GlobalVariable -VariableName "DebugMode"
+Import-GlobalVariable -VariableName "ForceClose"
+Import-GlobalVariable -VariableName "Force"
 
-# Heading
+# First heading
 Write-Output "winget-install $CurrentVersion"
 
-# Set OS version
+# Check for updates if -CheckForUpdate is specified
+if ($CheckForUpdate) { CheckForUpdate -RepoOwner $RepoOwner -RepoName $RepoName -CurrentVersion $CurrentVersion -PowerShellGalleryName $PowerShellGalleryName }
+
+# Update the script if -UpdateSelf is specified
+if ($UpdateSelf) { UpdateSelf }
+
+# Heading
+Write-Output "To check for updates, run winget-install -CheckForUpdate"
+
+# Get OS version
 $osVersion = Get-OSInfo
 
-# Set architecture type
+# Get architecture type
 $arch = $osVersion.Architecture
+
+# Get current process module name to determine if launched in conhost
+$currentProcess = Get-CurrentProcess
 
 # If it's a workstation, make sure it is Windows 10+
 if ($osVersion.Type -eq "Workstation" -and $osVersion.NumericVersion -lt 10) {
     Write-Error "winget is only compatible with Windows 10 or greater."
-    exit 1
+    ExitWithDelay 1
 }
 
 # If it's a workstation with Windows 10, make sure it's version 1809 or greater
 if ($osVersion.Type -eq "Workstation" -and $osVersion.NumericVersion -eq 10 -and $osVersion.ReleaseId -lt 1809) {
     Write-Error "winget is only compatible with Windows 10 version 1809 or greater."
-    exit 1
+    ExitWithDelay 1
 }
 
 # If it's a server, it needs to be 2022+
 if ($osVersion.Type -eq "Server" -and $osVersion.NumericVersion -lt 2022) {
     Write-Error "winget is only compatible with Windows Server 2022+."
-    exit 1
+    ExitWithDelay 1
 }
 
 # Check if winget is already installed
 if (Get-WingetStatus) {
     if ($Force -eq $false) {
-        Write-Output "winget is already installed, exiting..."
-        exit 0
+        Write-Warning "winget is already installed, exiting..."
+        Write-Warning "If you want to reinstall winget, run the script with the -Force parameter."
+        ExitWithDelay 0 5
+    }
+}
+
+# Check if ForceClose parameter is specified. If terminal detected, so relaunch in conhost
+if ($ForceClose) {
+    Write-Warning "ForceClose parameter is specified. Conflicting processes will be closed automatically!"
+    if ($currentProcess.Name -eq "WindowsTerminal") {
+        Write-Warning "Terminal detected, relaunching in conhost in 10 seconds..."
+        Write-Warning "It may break your custom batch files and ps1 scripts with extra commands!"
+        Start-Sleep -Seconds 10
+
+        # Prepare the command to relaunch
+        $command = "cd '$pwd'; $($MyInvocation.Line)"
+
+        # Append parameters if their corresponding variables are $true and not already in the command
+        if ($Force -and !($command -imatch '\s-Force\b')) { $command += " -Force" }
+        if ($ForceClose -and !($command -imatch '\s-ForceClose\b')) { $command += " -ForceClose" }
+        if ($DebugMode -and !($command -imatch '\s-DebugMode\b')) { $command += " -DebugMode" }
+
+        # Relaunch in conhost
+        if ([Environment]::Is64BitOperatingSystem) {
+            if ([Environment]::Is64BitProcess) {
+                Start-Process -FilePath "conhost.exe" -ArgumentList "powershell -ExecutionPolicy Bypass -Command &{$command}" -Verb RunAs
+            } else {
+                Start-Process -FilePath "$env:windir\sysnative\conhost.exe" -ArgumentList "powershell -ExecutionPolicy Bypass -Command &{$command}" -Verb RunAs
+            }
+        } else {
+            Start-Process -FilePath "conhost.exe" -ArgumentList "powershell -ExecutionPolicy Bypass -Command &{$command}" -Verb RunAs
+        }
+
+        # Stop the current process module
+        Stop-Process -id $currentProcess.Id
     }
 }
 
@@ -878,6 +1064,17 @@ try {
     Update-PathEnvironmentVariable -NewPath $WindowsAppsPath
 
     # ============================================================================ #
+    # Register winget
+    # ============================================================================ #
+    Write-Section "Registering winget..."
+    try {
+        Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+        Write-Output "`winget command registered successfully."
+    } catch {
+        Write-Warning "Unable to register winget. You may need to restart your computer for winget to work."
+    }
+
+    # ============================================================================ #
     # Finished
     # ============================================================================ #
 
@@ -891,10 +1088,12 @@ try {
     if (Get-WingetStatus -eq $true) {
         Write-Output "winget is installed and working now, you can go ahead and use it."
     } else {
-        Write-Warning "winget is installed but is not detected as a command. Try using winget now. If it doesn't work, try restarting your computer."
+        Write-Warning "winget is installed but is not detected as a command. Try using winget now. If it doesn't work, wait about 1 minute and try again (it is sometimes delayed). Also try restarting your computer."
         Write-Warning "If you restart your computer and the command still isn't recognized, please read the Troubleshooting section`nof the README: https://github.com/asheroto/winget-install#troubleshooting`n"
         Write-Warning "Make sure you have the latest version of the script by running this command: $PowerShellGalleryName -CheckForUpdate"
     }
+
+    ExitWithDelay 0
 } catch {
     # ============================================================================ #
     # Error handling
@@ -911,4 +1110,6 @@ try {
         }
         Write-Warning "Error: $($_.Exception.Message)`n"
     }
+
+    ExitWithDelay 1
 }
