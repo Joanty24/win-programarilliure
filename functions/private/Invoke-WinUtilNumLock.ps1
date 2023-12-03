@@ -1,25 +1,22 @@
-function Invoke-WinUtilBingSearch {
+function Invoke-WinUtilNumLock {
     <#
-
     .SYNOPSIS
-        Disables/Enables Bing Search
-
+        Disables/Enables NumLock on startup
     .PARAMETER Enabled
-        Indicates whether to enable or disable Bing Search
-
+        Indicates whether to enable or disable Numlock on startup
     #>
     Param($Enabled)
     Try{
         if ($Enabled -eq $false){
-            Write-Host "Enabling Bing Search"
-            $value = 1
+            Write-Host "Enabling Numlock on startup"
+            $value = 2
         }
         else {
-            Write-Host "Disabling Bing Search"
+            Write-Host "Disabling Numlock on startup"
             $value = 0
         }
-        $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-        Set-ItemProperty -Path $Path -Name BingSearchEnabled -Value $value
+        $Path = "HKCU:\Control Panel\Keyboard"
+        Set-ItemProperty -Path $Path -Name InitialKeyboardIndicators -Value $value
     }
     Catch [System.Security.SecurityException] {
         Write-Warning "Unable to set $Path\$Name to $Value due to a Security Exception"

@@ -1,25 +1,22 @@
-function Invoke-WinUtilBingSearch {
+function Invoke-WinUtilVerboseLogon {
     <#
-
     .SYNOPSIS
-        Disables/Enables Bing Search
-
+        Disables/Enables VerboseLogon Messages
     .PARAMETER Enabled
-        Indicates whether to enable or disable Bing Search
-
+        Indicates whether to enable or disable VerboseLogon messages
     #>
     Param($Enabled)
     Try{
         if ($Enabled -eq $false){
-            Write-Host "Enabling Bing Search"
+            Write-Host "Enabling Verbose Logon Messages"
             $value = 1
         }
         else {
-            Write-Host "Disabling Bing Search"
+            Write-Host "Disabling Verbose Logon Messages"
             $value = 0
         }
-        $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-        Set-ItemProperty -Path $Path -Name BingSearchEnabled -Value $value
+        $Path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+        Set-ItemProperty -Path $Path -Name VerboseStatus -Value $value
     }
     Catch [System.Security.SecurityException] {
         Write-Warning "Unable to set $Path\$Name to $Value due to a Security Exception"

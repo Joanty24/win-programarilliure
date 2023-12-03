@@ -1,25 +1,22 @@
-function Invoke-WinUtilBingSearch {
+function Invoke-WinUtilShowExt {
     <#
-
     .SYNOPSIS
-        Disables/Enables Bing Search
-
+        Disables/Enables Show file Extentions
     .PARAMETER Enabled
-        Indicates whether to enable or disable Bing Search
-
+        Indicates whether to enable or disable Show file extentions
     #>
     Param($Enabled)
     Try{
         if ($Enabled -eq $false){
-            Write-Host "Enabling Bing Search"
-            $value = 1
-        }
-        else {
-            Write-Host "Disabling Bing Search"
+            Write-Host "Showing file extentions"
             $value = 0
         }
-        $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-        Set-ItemProperty -Path $Path -Name BingSearchEnabled -Value $value
+        else {
+            Write-Host "hiding file extensions"
+            $value = 1
+        }
+        $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+        Set-ItemProperty -Path $Path -Name HideFileExt -Value $value
     }
     Catch [System.Security.SecurityException] {
         Write-Warning "Unable to set $Path\$Name to $Value due to a Security Exception"

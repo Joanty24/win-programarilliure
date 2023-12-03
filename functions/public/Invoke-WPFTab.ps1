@@ -1,24 +1,31 @@
 function Invoke-WPFTab {
 
     <#
-    
-        .DESCRIPTION
-        Sole purpose of this function is to reduce duplicated code for switching between tabs. 
-    
+
+    .SYNOPSIS
+        Sets the selected tab to the tab that was clicked
+
+    .PARAMETER ClickedTab
+        The name of the tab that was clicked
+
     #>
 
     Param ($ClickedTab)
-    $Tabs = Get-WinUtilVariables | Where-Object {$psitem -like "WPFTab?BT"}
-    $TabNav = Get-WinUtilVariables | Where-Object {$psitem -like "WPFTabNav"}
-    $x = [int]($ClickedTab -replace "WPFTab","" -replace "BT","") - 1
 
-    0..($Tabs.Count -1 ) | ForEach-Object {
-        
-        if ($x -eq $psitem){
-            $sync.$TabNav.Items[$psitem].IsSelected = $true
+    $tabNav = Get-WinUtilVariables | Where-Object {$psitem -like "WPFTabNav"}
+    $tabNumber = [int]($ClickedTab -replace "WPFTab","" -replace "BT","") - 1
+
+    $filter = Get-WinUtilVariables -Type ToggleButton | Where-Object {$psitem -like "WPFTab?BT"}
+    $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter} | ForEach-Object {
+        if ($ClickedTab -ne $PSItem.name) {
+            $sync[$PSItem.Name].IsChecked = $false
+            # $tabNumber = [int]($PSItem.Name -replace "WPFTab","" -replace "BT","") - 1
+            # $sync.$tabNav.Items[$tabNumber].IsSelected = $false
         }
-        else{
-            $sync.$TabNav.Items[$psitem].IsSelected = $false
+        else {
+            $sync["$ClickedTab"].IsChecked = $true
+            $tabNumber = [int]($ClickedTab-replace "WPFTab","" -replace "BT","") - 1
+            $sync.$tabNav.Items[$tabNumber].IsSelected = $true
         }
     }
 }
