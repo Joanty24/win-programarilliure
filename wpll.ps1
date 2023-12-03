@@ -5,27 +5,34 @@
 ###                                                                                                          ###
 ################################################################################################################
 
-<#
-.NOTES
-    GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231203_2046
-#>
-
 Start-Transcript $ENV:TEMP\Winutil.log -Append
 
-#Load DLLs
+# Load DLLs
+Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName System.Windows.Forms
 
-# variable to sync between runspaces
+# Variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231203_2046"
+$sync.version = "231203_2055"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
+$currentPid = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+$principal = new-object System.Security.Principal.WindowsPrincipal($currentPid)
+$adminRole=[System.Security.Principal.WindowsBuiltInRole]::Administrator
 
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Output "La utilitat s'ha d'executar amb permis d'Administrador"
+if ($principal.IsInRole($adminRole))
+{
+    $Host.UI.RawUI.WindowTitle = $myInvocation.MyCommand.Definition + "(Admin)"
+    clear-host
+}
+else
+{
+    $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
+    $newProcess.Arguments = $myInvocation.MyCommand.Definition;
+    $newProcess.Verb = "runas";
+    [System.Diagnostics.Process]::Start($newProcess);
     break
 }
 function Copy-Files {
@@ -2125,26 +2132,24 @@ Function Invoke-WPFFormVariables {
     #If ($global:ReadmeDisplay -ne $true) { Write-Host "If you need to reference this display again, run Get-FormVariables" -ForegroundColor Yellow; $global:ReadmeDisplay = $true }
 
 
-    Write-Host ""
-    Write-Host "    CCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT   "
-    Write-Host " CCC::::::::::::CT:::::::::::::::::::::TT:::::::::::::::::::::T   "
-    Write-Host "CC:::::::::::::::CT:::::::::::::::::::::TT:::::::::::::::::::::T  "
-    Write-Host "C:::::CCCCCCCC::::CT:::::TT:::::::TT:::::TT:::::TT:::::::TT:::::T "
-    Write-Host "C:::::C       CCCCCCTTTTTT  T:::::T  TTTTTTTTTTTT  T:::::T  TTTTTT"
-    Write-Host "C:::::C                     T:::::T                T:::::T        "
-    Write-Host "C:::::C                     T:::::T                T:::::T        "
-    Write-Host "C:::::C                     T:::::T                T:::::T        "
-    Write-Host "C:::::C                     T:::::T                T:::::T        "
-    Write-Host "C:::::C                     T:::::T                T:::::T        "
-    Write-Host "C:::::C                     T:::::T                T:::::T        "
-    Write-Host "C:::::C       CCCCCC        T:::::T                T:::::T        "
-    Write-Host "C:::::CCCCCCCC::::C      TT:::::::TT            TT:::::::TT       "
-    Write-Host "CC:::::::::::::::C       T:::::::::T            T:::::::::T       "
-    Write-Host "CCC::::::::::::C         T:::::::::T            T:::::::::T       "
-    Write-Host "  CCCCCCCCCCCCC          TTTTTTTTTTT            TTTTTTTTTTT       "
-    Write-Host ""
-    Write-Host "====Chris Titus Tech====="
-    Write-Host "=====Windows Toolbox====="
+Write-Host ""
+Write-Host ""
+Write-Host "    d88b  .d88b.   .d8b.  d8b   db "
+Write-Host "     8P' .8P  Y8. d8'  8b 888o  88 "
+Write-Host "     88  88    88 88ooo88 88V8o 88 "
+Write-Host "     88  88    88 88~~~88 88 V8o88 "
+Write-Host " db. 88   8b  d8' 88   88 88  V888 "
+Write-Host " Y8888P    Y88P'  YP   YP VP   V8P "
+Write-Host ""
+Write-Host "     d888888b d8888b. d8888b.      "
+Write-Host "      ~~88~~' 88   8D 88   8D      "
+Write-Host "        88    88   88 88oobY'      "
+Write-Host "        88    88   88 88 8b        "
+Write-Host "        88    88  .8D 88  88.      "
+Write-Host "        YP    Y8888D' 88   YD      "
+Write-Host ""
+Write-Host ""
+
 
     #====DEBUG GUI Elements====
 
@@ -4275,9 +4280,13 @@ $sync.configs.themes = '{
                     "ButtonConfigBackgroundColor":  "#444444",
                     "ButtonUpdatesBackgroundColor":  "#555555",
                     "ButtonInstallForegroundColor":  "#FFFFFF",
+                    "ButtonTweaksForegroundColor":  "#FFFFFF",
+                    "ButtonConfigForegroundColor":  "#FFFFFF",
+                    "ButtonUpdatesForegroundColor":  "#FFFFFF",
                     "ButtonBackgroundColor":  "#CACACA",
                     "ButtonBackgroundPressedColor":  "#FFFFFF",
-                    "ButtonBackgroundMouseoverColor":  "AliceBlue",
+                    "ButtonBackgroundMouseoverColor":  "#A55A64",
+                    "ButtonBackgroundSelectedColor":  "#BADFFF",
                     "ButtonForegroundColor":  "#000000",
                     "ButtonBorderThickness":  "0",
                     "ButtonMargin":  "0,3,0,3",
@@ -4295,51 +4304,59 @@ $sync.configs.themes = '{
                    "ButtonConfigBackgroundColor":  "#444444",
                    "ButtonUpdatesBackgroundColor":  "#555555",
                    "ButtonInstallForegroundColor":  "#FFFFFF",
-                   "ButtonBackgroundColor":  "#000000",
+                   "ButtonTweaksForegroundColor":  "#FFFFFF",
+                   "ButtonConfigForegroundColor":  "#FFFFFF",
+                   "ButtonUpdatesForegroundColor":  "#FFFFFF",
+                   "ButtonBackgroundColor":  "#000019",
                    "ButtonBackgroundPressedColor":  "#FFFFFF",
                    "ButtonBackgroundMouseoverColor":  "#A55A64",
+                   "ButtonBackgroundSelectedColor":  "#FF5733",
                    "ButtonForegroundColor":  "#9CCC65",
-                   "ButtonBorderThickness":  "3",
-                   "ButtonMargin":  "2",
-                   "ButtonCornerRadius": "4"
+                   "ButtonBorderThickness":  "1",
+                   "ButtonMargin":  "1",
+                   "ButtonCornerRadius": "2"
                }
 }' | convertfrom-json
 # SPDX-License-Identifier: MIT
 
-#Configure max thread count for RunspacePool.
+# Set the maximum number of threads for the RunspacePool to the number of threads on the machine
 $maxthreads = [int]$env:NUMBER_OF_PROCESSORS
 
-#Create a new session state for parsing variables ie hashtable into our runspace.
+# Create a new session state for parsing variables into our runspace
 $hashVars = New-object System.Management.Automation.Runspaces.SessionStateVariableEntry -ArgumentList 'sync',$sync,$Null
 $InitialSessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
 
-#Add the variable to the RunspacePool sessionstate
+# Add the variable to the session state
 $InitialSessionState.Variables.Add($hashVars)
 
-#Add functions
+# Get every private function and add them to the session state
 $functions = Get-ChildItem function:\ | Where-Object {$_.name -like "*winutil*" -or $_.name -like "*WPF*"}
 foreach ($function in $functions){
     $functionDefinition = Get-Content function:\$($function.name)
     $functionEntry = New-Object System.Management.Automation.Runspaces.SessionStateFunctionEntry -ArgumentList $($function.name), $functionDefinition
-    
-    # And add it to the iss object
+
     $initialSessionState.Commands.Add($functionEntry)
 }
 
-#Create our runspace pool. We are entering three parameters here min thread count, max thread count and host machine of where these runspaces should be made.
-$sync.runspace = [runspacefactory]::CreateRunspacePool(1,$maxthreads,$InitialSessionState, $Host)
+# Create the runspace pool
+$sync.runspace = [runspacefactory]::CreateRunspacePool(
+    1,                      # Minimum thread count
+    $maxthreads,            # Maximum thread count
+    $InitialSessionState,   # Initial session state
+    $Host                   # Machine to create runspaces on
+)
 
-#Open a RunspacePool instance.
+# Open the RunspacePool instance
 $sync.runspace.Open()
 
-#region exception classes
+# Create classes for different exceptions
 
     class WingetFailedInstall : Exception {
         [string] $additionalData
 
         WingetFailedInstall($Message) : base($Message) {}
     }
-    
+
     class ChocoFailedInstall : Exception {
         [string] $additionalData
 
@@ -4351,8 +4368,7 @@ $sync.runspace.Open()
 
         GenericException($Message) : base($Message) {}
     }
-    
-#endregion exception classes
+
 
 $inputXML = $inputXML -replace 'mc:Ignorable="d"', '' -replace "x:N", 'N' -replace '^<Win.*', '<Window'
 
@@ -4367,8 +4383,8 @@ $inputXML = Set-WinUtilUITheme -inputXML $inputXML -themeName $ctttheme
 
 [void][System.Reflection.Assembly]::LoadWithPartialName('presentationframework')
 [xml]$XAML = $inputXML
-#Read XAML
 
+# Read the XAML file
 $reader = (New-Object System.Xml.XmlNodeReader $xaml)
 try { $sync["Form"] = [Windows.Markup.XamlReader]::Load( $reader ) }
 catch [System.Management.Automation.MethodInvocationException] {
@@ -4379,7 +4395,6 @@ catch [System.Management.Automation.MethodInvocationException] {
     }
 }
 catch {
-    # If it broke some other way <img draggable="false" role="img" class="emoji" alt="??" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/1f600.svg">
     Write-Host "Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed."
 }
 
@@ -4400,6 +4415,16 @@ $sync.keys | ForEach-Object {
     }
 }
 
+$sync.keys | ForEach-Object {
+    if($sync.$psitem){
+        if($($sync["$psitem"].GetType() | Select-Object -ExpandProperty Name) -eq "ToggleButton"){
+            $sync["$psitem"].Add_Click({
+                [System.Object]$Sender = $args[0]
+                Invoke-WPFButton $Sender.name
+            })
+        }
+    }
+}
 
 $sync.keys | ForEach-Object {
     if($sync.$psitem){
@@ -4417,40 +4442,211 @@ $sync.keys | ForEach-Object {
     }
 }
 
-
 #===========================================================================
 # Setup background config
 #===========================================================================
 
-#Load information in the background
+# Load computer information in the background
 Invoke-WPFRunspace -ScriptBlock {
     $sync.ConfigLoaded = $False
-
     $sync.ComputerInfo = Get-ComputerInfo
-
     $sync.ConfigLoaded = $True
 } | Out-Null
 
 #===========================================================================
-# Shows the form
+# Setup and Show the Form
 #===========================================================================
 
+# Print the logo
 Invoke-WPFFormVariables
 
-try{
-    Install-WinUtilChoco
-}
-Catch [ChocoFailedInstall]{
-    Write-Host "==========================================="
-    Write-Host "--    Chocolatey failed to install      ---"
-    Write-Host "==========================================="
-}
+# Check if Chocolatey is installed
+Install-WinUtilChoco
+
+# Set the titlebar
 $sync["Form"].title = $sync["Form"].title + " " + $sync.version
+# Set the commands that will run when the form is closed
 $sync["Form"].Add_Closing({
     $sync.runspace.Dispose()
     $sync.runspace.Close()
     [System.GC]::Collect()
 })
+
+# add some shortcuts for people that don't like clicking
+$commonKeyEvents = {
+    if ($sync.ProcessRunning -eq $true) {
+        return
+    }
+
+    # Escape removes focus from the searchbox that way all shortcuts will start workinf again
+    if ($_.Key -eq "Escape") {
+        if ($sync.CheckboxFilter.IsFocused)
+        {
+            $sync.CheckboxFilter.SelectAll()
+            $sync.CheckboxFilter.Text = ""
+            $sync.CheckboxFilter.Focus()
+            return
+        }
+    }
+
+    # don't ask, I know what I'm doing, just go...
+    if (($_.Key -eq "Q" -and $_.KeyboardDevice.Modifiers -eq "Ctrl"))
+    {
+        $this.Close()
+    }
+
+    # $ret = [System.Windows.Forms.MessageBox]::Show("Are you sure you want to Exit?", "Winutil", [System.Windows.Forms.MessageBoxButtons]::YesNo,
+    # [System.Windows.Forms.MessageBoxIcon]::Question, [System.Windows.Forms.MessageBoxDefaultButton]::Button2) 
+
+    # switch ($ret) {
+    #     "Yes" {
+    #         $this.Close()
+    #     } 
+    #     "No" {
+    #         return
+    #     } 
+    # }
+
+
+    if ($_.KeyboardDevice.Modifiers -eq "Alt") {
+        # this is an example how to handle shortcuts per tab
+        # Alt-I on the MicroWin tab (4) would press GetIso Button
+        # NOTE: All per tab shortcuts have to be handled *before* regular tab keys
+        # if ($_.SystemKey -eq "I") {
+        #     $TabNav = Get-WinUtilVariables | Where-Object {$psitem -like "WPFTabNav"}
+        #     if ($sync.$TabNav.Items[4].IsSelected -eq $true) {
+        #         Invoke-WPFButton "WPFGetIso"
+        #         break
+        #     }
+        # }
+        if ($_.SystemKey -eq "I") {
+            Invoke-WPFButton "WPFTab1BT"
+        }
+        if ($_.SystemKey -eq "T") {
+            Invoke-WPFButton "WPFTab2BT"
+        }
+        if ($_.SystemKey -eq "C") {
+            Invoke-WPFButton "WPFTab3BT"
+        }
+        if ($_.SystemKey -eq "U") {
+            Invoke-WPFButton "WPFTab4BT"
+        }
+        if ($_.SystemKey -eq "M") {
+            Invoke-WPFButton "WPFTab5BT"
+        }
+    }
+    # shortcut for the filter box
+    if ($_.Key -eq "F" -and $_.KeyboardDevice.Modifiers -eq "Ctrl") {
+        if ($sync.CheckboxFilter.Text -eq "Ctrl-F to filter") {
+            $sync.CheckboxFilter.SelectAll()
+            $sync.CheckboxFilter.Text = ""
+        }
+        $sync.CheckboxFilter.Focus()
+    }
+}
+$sync["Form"].Add_PreViewKeyDown($commonKeyEvents)
+
+# adding some left mouse window move on drag capability
+$sync["Form"].Add_MouseLeftButtonDown({
+    $sync["Form"].DragMove()
+})
+
+# setting window icon to make it look more professional
+$sync["Form"].Add_Loaded({
+   
+    $downloadUrl = "https://christitus.com/images/logo-full.png"
+    $destinationPath = Join-Path $env:TEMP "cttlogo.png"
+    
+    # Check if the file already exists
+    if (-not (Test-Path $destinationPath)) {
+        # File does not exist, download it
+        $wc = New-Object System.Net.WebClient
+        $wc.DownloadFile($downloadUrl, $destinationPath)
+        Write-Output "File downloaded to: $destinationPath"
+    } else {
+        Write-Output "File already exists at: $destinationPath"
+    }
+    $sync["Form"].Icon = $destinationPath
+
+    Try { 
+        [Void][Window]
+    } Catch {
+        Add-Type @"
+        using System;
+        using System.Runtime.InteropServices;
+        public class Window {
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool MoveWindow(IntPtr handle, int x, int y, int width, int height, bool redraw);
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool ShowWindow(IntPtr handle, int state);
+        }
+        public struct RECT {
+            public int Left;   // x position of upper-left corner
+            public int Top;    // y position of upper-left corner
+            public int Right;  // x position of lower-right corner
+            public int Bottom; // y position of lower-right corner
+        }
+"@
+    }
+    
+    $processId  = [System.Diagnostics.Process]::GetCurrentProcess().Id
+    $windowHandle  = (Get-Process -Id $processId).MainWindowHandle
+    $rect = New-Object RECT
+    [Void][Window]::GetWindowRect($windowHandle,[ref]$rect)
+    
+    # only snap upper edge don't move left to right, in case people have multimon setup
+    $x = $rect.Left
+    $y = 0
+    $width  = $rect.Right  - $rect.Left
+    $height = $rect.Bottom - $rect.Top
+    
+    # Move the window to that position...
+    [Void][Window]::MoveWindow($windowHandle, $x, $y, $width, $height, $True)
+    Invoke-WPFTab "WPFTab1BT"
+    $sync["Form"].Focus()
+})
+
+$sync["CheckboxFilter"].Add_TextChanged({
+    #Write-host $sync.CheckboxFilter.Text
+
+    $filter = Get-WinUtilVariables -Type Checkbox
+    $CheckBoxes = $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter}
+    $textToSearch = $sync.CheckboxFilter.Text
+    Foreach ($CheckBox in $CheckBoxes) {
+        #Write-Host "$($sync.CheckboxFilter.Text)"
+        if ($CheckBox -eq $null -or $CheckBox.Value -eq $null -or $CheckBox.Value.Content -eq $null) { 
+            continue
+        }
+         if ($CheckBox.Value.Content.ToLower().Contains($textToSearch)) {
+             $CheckBox.Value.Visibility = "Visible"
+         }
+         else {
+             $CheckBox.Value.Visibility = "Collapsed"
+         }
+     }
+})
+
+
+$downloadUrl = "https://christitus.com/images/logo-full.png"
+$destinationPath = Join-Path $env:TEMP "cttlogo.png"
+
+# Check if the file already exists
+if (-not (Test-Path $destinationPath)) {
+    # File does not exist, download it
+    $wc = New-Object System.Net.WebClient
+    $wc.DownloadFile($downloadUrl, $destinationPath)
+    Write-Output "File downloaded to: $destinationPath"
+} else {
+    Write-Output "File already exists at: $destinationPath"
+}
+
+# show current windowsd Product ID
+#Write-Host "Your Windows Product Key: $((Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey)"
 
 $sync["Form"].ShowDialog() | out-null
 Stop-Transcript
