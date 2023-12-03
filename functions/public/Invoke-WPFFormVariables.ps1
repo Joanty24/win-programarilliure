@@ -1,13 +1,4 @@
-Function Invoke-WPFFormVariables {
-    <#
-
-    .SYNOPSIS
-        Prints the logo
-
-    #>
-    #If ($global:ReadmeDisplay -ne $true) { Write-Host "If you need to reference this display again, run Get-FormVariables" -ForegroundColor Yellow; $global:ReadmeDisplay = $true }
-
-
+function Invoke-WPFFormVariables{
 Write-Host ""
 Write-Host ""
 Write-Host "    d88b  .d88b.   .d8b.  d8b   db "
@@ -25,10 +16,4 @@ Write-Host "        88    88  .8D 88  88.      "
 Write-Host "        YP    Y8888D' 88   YD      "
 Write-Host ""
 Write-Host ""
-
-
-    #====DEBUG GUI Elements====
-
-    #Write-Host "Found the following interactable elements from our form" -ForegroundColor Cyan
-    #get-variable WPF*
 }

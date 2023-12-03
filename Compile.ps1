@@ -1,6 +1,7 @@
 $OFS = "`r`n"
 $scriptname = "wpll.ps1"
 
+
 if (Test-Path -Path "$($scriptname)")
 {
     Remove-Item -Force "$($scriptname)"
@@ -21,12 +22,14 @@ Get-ChildItem .\functions -Recurse -File | ForEach-Object {
 }
 
 Get-ChildItem .\xaml | ForEach-Object {
-    $xaml = (Get-Content $psitem.FullName).replace("'","''")    
+    $xaml = (Get-Content $psitem.FullName).replace("'","''")
+
     Write-output "`$$($psitem.BaseName) = '$xaml'" | Out-File ./$scriptname -Append -Encoding ascii
 }
 
 Get-ChildItem .\config | Where-Object {$psitem.extension -eq ".json"} | ForEach-Object {
-    $json = (Get-Content $psitem.FullName).replace("'","''")   
+    $json = (Get-Content $psitem.FullName).replace("'","''")
+
     Write-output "`$sync.configs.$($psitem.BaseName) = '$json' `| convertfrom-json" | Out-File ./$scriptname -Append -Encoding ascii
 }
 

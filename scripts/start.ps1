@@ -1,3 +1,9 @@
+<#
+.NOTES
+    GitHub         : https://github.com/Joanty24/win-programarilliure
+    Version        : #{replaceme}
+#>
+
 Start-Transcript $ENV:TEMP\Winutil.log -Append
 
 # Load DLLs
