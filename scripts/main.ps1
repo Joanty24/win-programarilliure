@@ -234,7 +234,7 @@ $sync["Form"].Add_MouseLeftButtonDown({
 })
 
 # setting window icon to make it look more professional
-$sync["Form"].Add_Loaded({
+# $sync["Form"].Add_Loaded({
 #    
 #     $downloadUrl = "https://christitus.com/images/logo-full.png"
 #     $destinationPath = Join-Path $env:TEMP "cttlogo.png"
@@ -292,25 +292,25 @@ $sync["Form"].Add_Loaded({
 #     $sync["Form"].Focus()
 # })
 # 
-$sync["CheckboxFilter"].Add_TextChanged({
-    #Write-host $sync.CheckboxFilter.Text
-
-    $filter = Get-WinUtilVariables -Type Checkbox
-    $CheckBoxes = $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter}
-    $textToSearch = $sync.CheckboxFilter.Text
-    Foreach ($CheckBox in $CheckBoxes) {
-        #Write-Host "$($sync.CheckboxFilter.Text)"
-        if ($CheckBox -eq $null -or $CheckBox.Value -eq $null -or $CheckBox.Value.Content -eq $null) { 
-            continue
-        }
-         if ($CheckBox.Value.Content.ToLower().Contains($textToSearch)) {
-             $CheckBox.Value.Visibility = "Visible"
-         }
-         else {
-             $CheckBox.Value.Visibility = "Collapsed"
-         }
-     }
-})
+# $sync["CheckboxFilter"].Add_TextChanged({
+#     #Write-host $sync.CheckboxFilter.Text
+# 
+#     $filter = Get-WinUtilVariables -Type Checkbox
+#     $CheckBoxes = $sync.GetEnumerator() | Where-Object {$psitem.Key -in $filter}
+#     $textToSearch = $sync.CheckboxFilter.Text
+#     Foreach ($CheckBox in $CheckBoxes) {
+#         #Write-Host "$($sync.CheckboxFilter.Text)"
+#         if ($CheckBox -eq $null -or $CheckBox.Value -eq $null -or $CheckBox.Value.Content -eq $null) { 
+#             continue
+#         }
+#          if ($CheckBox.Value.Content.ToLower().Contains($textToSearch)) {
+#              $CheckBox.Value.Visibility = "Visible"
+#          }
+#          else {
+#              $CheckBox.Value.Visibility = "Collapsed"
+#          }
+#      }
+# })
 # 
 # $downloadUrl = "https://christitus.com/images/logo-full.png"
 # $destinationPath = Join-Path $env:TEMP "cttlogo.png"
