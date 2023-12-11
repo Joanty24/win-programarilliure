@@ -143,7 +143,8 @@ Invoke-WPFFormVariables
 
 # Check if Chocolatey is installed
 Install-WinUtilChoco
-
+# Install Winget with Choco
+Invoke-WPFFixesWinget
 # Set the titlebar
 $sync["Form"].title = $sync["Form"].title + " " + $sync.version
 # Set the commands that will run when the form is closed
@@ -235,8 +236,8 @@ $sync["Form"].Add_MouseLeftButtonDown({
 # setting window icon to make it look more professional
 $sync["Form"].Add_Loaded({
    
-    $downloadUrl = "https://christitus.com/images/logo-full.png"
-    $destinationPath = Join-Path $env:TEMP "cttlogo.png"
+    # $downloadUrl = "https://christitus.com/images/logo-full.png"
+    # $destinationPath = Join-Path $env:TEMP "cttlogo.png"
     
     # Check if the file already exists
     if (-not (Test-Path $destinationPath)) {
@@ -313,8 +314,8 @@ $sync["CheckboxFilter"].Add_TextChanged({
 })
 
 
-$downloadUrl = "https://christitus.com/images/logo-full.png"
-$destinationPath = Join-Path $env:TEMP "cttlogo.png"
+# $downloadUrl = "https://christitus.com/images/logo-full.png"
+# $destinationPath = Join-Path $env:TEMP "cttlogo.png"
 
 # Check if the file already exists
 if (-not (Test-Path $destinationPath)) {

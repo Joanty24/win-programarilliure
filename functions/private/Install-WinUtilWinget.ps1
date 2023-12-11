@@ -46,5 +46,7 @@ function Install-WinUtilWinget {
     }
     Catch{
         throw [WingetFailedInstall]::new('Failed to install')
+        # Start-Process -FilePath "choco" -ArgumentList "install winget -y" -NoNewWindow -Wait
     }
+
 }

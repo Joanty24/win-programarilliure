@@ -26,7 +26,7 @@ function Invoke-WPFInstall {
             $sync.ProcessRunning = $true
 
             # Ensure winget is installed
-            Install-WinUtilWinget
+            # Install-WinUtilWinget
 
             # Install all selected programs in new window
             Install-WinUtilProgramWinget -ProgramsToInstall $WingetInstall
