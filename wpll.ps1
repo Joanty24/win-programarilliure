@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231211_1954
+    Version        : 231211_2015
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -20,7 +20,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # Variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231211_1954"
+$sync.version = "231211_2015"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -4420,7 +4420,7 @@ Invoke-WPFFormVariables
 # Check if Chocolatey is installed
 Install-WinUtilChoco
 # Install Winget with Choco
-# Invoke-WPFFixesWinget
+Invoke-WPFFixesWinget
 # Set the titlebar
 $sync["Form"].title = $sync["Form"].title + " " + $sync.version
 # Set the commands that will run when the form is closed
