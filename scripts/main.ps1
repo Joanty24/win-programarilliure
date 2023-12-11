@@ -234,7 +234,7 @@ $sync["Form"].Add_MouseLeftButtonDown({
 })
 
 # setting window icon to make it look more professional
-# $sync["Form"].Add_Loaded({
+$sync["Form"].Add_Loaded({
 #    
 #     $downloadUrl = "https://christitus.com/images/logo-full.png"
 #     $destinationPath = Join-Path $env:TEMP "cttlogo.png"
@@ -275,24 +275,24 @@ $sync["Form"].Add_MouseLeftButtonDown({
 #         }
 # "@
 #     }
-#     
-#     $processId  = [System.Diagnostics.Process]::GetCurrentProcess().Id
-#     $windowHandle  = (Get-Process -Id $processId).MainWindowHandle
-#     $rect = New-Object RECT
-#     [Void][Window]::GetWindowRect($windowHandle,[ref]$rect)
-#     
-#     # only snap upper edge don't move left to right, in case people have multimon setup
-#     $x = $rect.Left
-#     $y = 0
-#     $width  = $rect.Right  - $rect.Left
-#     $height = $rect.Bottom - $rect.Top
-#     
-#     # Move the window to that position...
-#     [Void][Window]::MoveWindow($windowHandle, $x, $y, $width, $height, $True)
-#     Invoke-WPFTab "WPFTab1BT"
-#     $sync["Form"].Focus()
-# })
-# 
+    
+    $processId  = [System.Diagnostics.Process]::GetCurrentProcess().Id
+    $windowHandle  = (Get-Process -Id $processId).MainWindowHandle
+    $rect = New-Object RECT
+    [Void][Window]::GetWindowRect($windowHandle,[ref]$rect)
+    
+    # only snap upper edge don't move left to right, in case people have multimon setup
+    $x = $rect.Left
+    $y = 0
+    $width  = $rect.Right  - $rect.Left
+    $height = $rect.Bottom - $rect.Top
+    
+    # Move the window to that position...
+    [Void][Window]::MoveWindow($windowHandle, $x, $y, $width, $height, $True)
+    Invoke-WPFTab "WPFTab1BT"
+    $sync["Form"].Focus()
+})
+
 $sync["CheckboxFilter"].Add_TextChanged({
     #Write-host $sync.CheckboxFilter.Text
 
