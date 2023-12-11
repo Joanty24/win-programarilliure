@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231211_2015
+    Version        : 231211_2019
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -20,7 +20,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # Variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231211_2015"
+$sync.version = "231211_2019"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -3538,7 +3538,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
         mc:Ignorable="d"
         Background="{MainBackgroundColor}"
         WindowStartupLocation="CenterScreen"
-        Title="Instal.lador de programari lliure" Height="540" Width="1140">
+        Title="Instal.lador de programari lliure" Height="500" Width="1000">
 
     <Window.Resources>
     <!--Scrollbar Thumbs-->
@@ -3971,23 +3971,6 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
     </Window.Resources>
     <Border Name="WPFdummy" Grid.Column="0" Grid.Row="1">
             <Grid Background="{MainBackgroundColor}" ShowGridLines="False" Name="WPFMainGrid"  Width="Auto" Height="Auto">
-                <!--<Grid.RowDefinitions>
-                    <RowDefinition Height=".1*"/>
-                    <RowDefinition Height=".9*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
-                    <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
-                        Background="{ButtonInstallBackgroundColor}" Foreground="white" FontWeight="Bold" Name="WPFTab1BT">
-                        <ToggleButton.Content>
-                            <TextBlock Background="Transparent" Foreground="{ButtonInstallForegroundColor}" >
-                                <Underline>I</Underline>nstal.lador
-                            </TextBlock>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                </DockPanel>-->
                 <ScrollViewer Grid.Row="1" Padding="-1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="Transparent">
                 <TabControl Name="WPFTabNav" Background="#222222" Width="Auto" Height="Auto">
                     <TabItem Header="Install" Visibility="Collapsed" Name="WPFTab1">
@@ -4005,7 +3988,6 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                             </Grid.RowDefinitions>
 
                             <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
-                                <Label Content="Winget:" FontSize="17" VerticalAlignment="Center"/>
                                 <Button Name="WPFinstall" Content=" Instal.lar seleccio " Margin="5"/>
                                 <Button Name="WPFInstallUpgrade" Content=" Actualitzar tot " Margin="5"/>
                                 <Button Name="WPFuninstall" Content=" Desinstal.lar seleccio " Margin="5"/>
