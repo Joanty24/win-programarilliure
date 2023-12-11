@@ -234,65 +234,65 @@ $sync["Form"].Add_MouseLeftButtonDown({
 })
 
 # setting window icon to make it look more professional
-$sync["Form"].Add_Loaded({
-   
-    # $downloadUrl = "https://christitus.com/images/logo-full.png"
-    # $destinationPath = Join-Path $env:TEMP "cttlogo.png"
-    
-    # Check if the file already exists
-    if (-not (Test-Path $destinationPath)) {
-        # File does not exist, download it
-        $wc = New-Object System.Net.WebClient
-        $wc.DownloadFile($downloadUrl, $destinationPath)
-        Write-Output "File downloaded to: $destinationPath"
-    } else {
-        Write-Output "File already exists at: $destinationPath"
-    }
-    $sync["Form"].Icon = $destinationPath
-
-    Try { 
-        [Void][Window]
-    } Catch {
-        Add-Type @"
-        using System;
-        using System.Runtime.InteropServices;
-        public class Window {
-            [DllImport("user32.dll")]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-            [DllImport("user32.dll")]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool MoveWindow(IntPtr handle, int x, int y, int width, int height, bool redraw);
-            [DllImport("user32.dll")]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool ShowWindow(IntPtr handle, int state);
-        }
-        public struct RECT {
-            public int Left;   // x position of upper-left corner
-            public int Top;    // y position of upper-left corner
-            public int Right;  // x position of lower-right corner
-            public int Bottom; // y position of lower-right corner
-        }
-"@
-    }
-    
-    $processId  = [System.Diagnostics.Process]::GetCurrentProcess().Id
-    $windowHandle  = (Get-Process -Id $processId).MainWindowHandle
-    $rect = New-Object RECT
-    [Void][Window]::GetWindowRect($windowHandle,[ref]$rect)
-    
-    # only snap upper edge don't move left to right, in case people have multimon setup
-    $x = $rect.Left
-    $y = 0
-    $width  = $rect.Right  - $rect.Left
-    $height = $rect.Bottom - $rect.Top
-    
-    # Move the window to that position...
-    [Void][Window]::MoveWindow($windowHandle, $x, $y, $width, $height, $True)
-    Invoke-WPFTab "WPFTab1BT"
-    $sync["Form"].Focus()
-})
-
+# $sync["Form"].Add_Loaded({
+#    
+#     $downloadUrl = "https://christitus.com/images/logo-full.png"
+#     $destinationPath = Join-Path $env:TEMP "cttlogo.png"
+#     
+#     # Check if the file already exists
+#     if (-not (Test-Path $destinationPath)) {
+#         # File does not exist, download it
+#         $wc = New-Object System.Net.WebClient
+#         $wc.DownloadFile($downloadUrl, $destinationPath)
+#         Write-Output "File downloaded to: $destinationPath"
+#     } else {
+#         Write-Output "File already exists at: $destinationPath"
+#     }
+#     $sync["Form"].Icon = $destinationPath
+# 
+#     Try { 
+#         [Void][Window]
+#     } Catch {
+#         Add-Type @"
+#         using System;
+#         using System.Runtime.InteropServices;
+#         public class Window {
+#             [DllImport("user32.dll")]
+#             [return: MarshalAs(UnmanagedType.Bool)]
+#             public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+#             [DllImport("user32.dll")]
+#             [return: MarshalAs(UnmanagedType.Bool)]
+#             public static extern bool MoveWindow(IntPtr handle, int x, int y, int width, int height, bool redraw);
+#             [DllImport("user32.dll")]
+#             [return: MarshalAs(UnmanagedType.Bool)]
+#             public static extern bool ShowWindow(IntPtr handle, int state);
+#         }
+#         public struct RECT {
+#             public int Left;   // x position of upper-left corner
+#             public int Top;    // y position of upper-left corner
+#             public int Right;  // x position of lower-right corner
+#             public int Bottom; // y position of lower-right corner
+#         }
+# "@
+#     }
+#     
+#     $processId  = [System.Diagnostics.Process]::GetCurrentProcess().Id
+#     $windowHandle  = (Get-Process -Id $processId).MainWindowHandle
+#     $rect = New-Object RECT
+#     [Void][Window]::GetWindowRect($windowHandle,[ref]$rect)
+#     
+#     # only snap upper edge don't move left to right, in case people have multimon setup
+#     $x = $rect.Left
+#     $y = 0
+#     $width  = $rect.Right  - $rect.Left
+#     $height = $rect.Bottom - $rect.Top
+#     
+#     # Move the window to that position...
+#     [Void][Window]::MoveWindow($windowHandle, $x, $y, $width, $height, $True)
+#     Invoke-WPFTab "WPFTab1BT"
+#     $sync["Form"].Focus()
+# })
+# 
 $sync["CheckboxFilter"].Add_TextChanged({
     #Write-host $sync.CheckboxFilter.Text
 
@@ -316,16 +316,16 @@ $sync["CheckboxFilter"].Add_TextChanged({
 
 # $downloadUrl = "https://christitus.com/images/logo-full.png"
 # $destinationPath = Join-Path $env:TEMP "cttlogo.png"
-
+# 
 # Check if the file already exists
-if (-not (Test-Path $destinationPath)) {
-    # File does not exist, download it
-    $wc = New-Object System.Net.WebClient
-    $wc.DownloadFile($downloadUrl, $destinationPath)
-    Write-Output "File downloaded to: $destinationPath"
-} else {
-    Write-Output "File already exists at: $destinationPath"
-}
+# if (-not (Test-Path $destinationPath)) {
+#     # File does not exist, download it
+#     $wc = New-Object System.Net.WebClient
+#     $wc.DownloadFile($downloadUrl, $destinationPath)
+#     Write-Output "File downloaded to: $destinationPath"
+# } else {
+#     Write-Output "File already exists at: $destinationPath"
+# }
 
 # show current windowsd Product ID
 #Write-Host "Your Windows Product Key: $((Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey)"

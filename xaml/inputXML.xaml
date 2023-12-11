@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="{MainBackgroundColor}"
         WindowStartupLocation="CenterScreen"
-        Title="Instal.lador de programari lliure" Height="550" Width="1200">
+        Title="Instal.lador de programari lliure" Height="540" Width="1140">
 
     <Window.Resources>
     <!--Scrollbar Thumbs-->
@@ -440,14 +440,14 @@
     </Window.Resources>
     <Border Name="WPFdummy" Grid.Column="0" Grid.Row="1">
             <Grid Background="{MainBackgroundColor}" ShowGridLines="False" Name="WPFMainGrid"  Width="Auto" Height="Auto">
-                <Grid.RowDefinitions>
+                <!--<Grid.RowDefinitions>
                     <RowDefinition Height=".1*"/>
                     <RowDefinition Height=".9*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <!--<DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
+                <DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
                     <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
                         Background="{ButtonInstallBackgroundColor}" Foreground="white" FontWeight="Bold" Name="WPFTab1BT">
                         <ToggleButton.Content>
@@ -481,7 +481,7 @@
                                 <Button Name="WPFGetInstalled" Content=" Seleccionar instal.lats " Margin="5"/>
                                 <Button Name="WPFclearWinget" Content=" Esclarir seleccio " Margin="5"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2" Margin="5">
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="3" Grid.ColumnSpan="1.5" Margin="5">
                                 <Button Name="WPFimportWinget" Content=" Importar seleccio " Margin="5"/>
                                 <Button Name="WPFexportWinget" Content=" Exportar seleccio " Margin="5"/>
                             </StackPanel>

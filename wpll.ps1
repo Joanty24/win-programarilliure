@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231211_1926
+    Version        : 231211_1934
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -20,7 +20,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # Variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231211_1926"
+$sync.version = "231211_1934"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -3538,7 +3538,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
         mc:Ignorable="d"
         Background="{MainBackgroundColor}"
         WindowStartupLocation="CenterScreen"
-        Title="Instal.lador de programari lliure" Height="550" Width="1200">
+        Title="Instal.lador de programari lliure" Height="540" Width="1140">
 
     <Window.Resources>
     <!--Scrollbar Thumbs-->
@@ -3971,14 +3971,14 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
     </Window.Resources>
     <Border Name="WPFdummy" Grid.Column="0" Grid.Row="1">
             <Grid Background="{MainBackgroundColor}" ShowGridLines="False" Name="WPFMainGrid"  Width="Auto" Height="Auto">
-                <Grid.RowDefinitions>
+                <!--<Grid.RowDefinitions>
                     <RowDefinition Height=".1*"/>
                     <RowDefinition Height=".9*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <!--<DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
+                <DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
                     <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
                         Background="{ButtonInstallBackgroundColor}" Foreground="white" FontWeight="Bold" Name="WPFTab1BT">
                         <ToggleButton.Content>
@@ -4012,7 +4012,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                                 <Button Name="WPFGetInstalled" Content=" Seleccionar instal.lats " Margin="5"/>
                                 <Button Name="WPFclearWinget" Content=" Esclarir seleccio " Margin="5"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2" Margin="5">
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="3" Grid.ColumnSpan="1.5" Margin="5">
                                 <Button Name="WPFimportWinget" Content=" Importar seleccio " Margin="5"/>
                                 <Button Name="WPFexportWinget" Content=" Exportar seleccio " Margin="5"/>
                             </StackPanel>
@@ -4510,65 +4510,65 @@ $sync["Form"].Add_MouseLeftButtonDown({
 })
 
 # setting window icon to make it look more professional
-$sync["Form"].Add_Loaded({
-   
-    # $downloadUrl = "https://christitus.com/images/logo-full.png"
-    # $destinationPath = Join-Path $env:TEMP "cttlogo.png"
-    
-    # Check if the file already exists
-    if (-not (Test-Path $destinationPath)) {
-        # File does not exist, download it
-        $wc = New-Object System.Net.WebClient
-        $wc.DownloadFile($downloadUrl, $destinationPath)
-        Write-Output "File downloaded to: $destinationPath"
-    } else {
-        Write-Output "File already exists at: $destinationPath"
-    }
-    $sync["Form"].Icon = $destinationPath
-
-    Try { 
-        [Void][Window]
-    } Catch {
-        Add-Type @"
-        using System;
-        using System.Runtime.InteropServices;
-        public class Window {
-            [DllImport("user32.dll")]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-            [DllImport("user32.dll")]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool MoveWindow(IntPtr handle, int x, int y, int width, int height, bool redraw);
-            [DllImport("user32.dll")]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool ShowWindow(IntPtr handle, int state);
-        }
-        public struct RECT {
-            public int Left;   // x position of upper-left corner
-            public int Top;    // y position of upper-left corner
-            public int Right;  // x position of lower-right corner
-            public int Bottom; // y position of lower-right corner
-        }
-"@
-    }
-    
-    $processId  = [System.Diagnostics.Process]::GetCurrentProcess().Id
-    $windowHandle  = (Get-Process -Id $processId).MainWindowHandle
-    $rect = New-Object RECT
-    [Void][Window]::GetWindowRect($windowHandle,[ref]$rect)
-    
-    # only snap upper edge don't move left to right, in case people have multimon setup
-    $x = $rect.Left
-    $y = 0
-    $width  = $rect.Right  - $rect.Left
-    $height = $rect.Bottom - $rect.Top
-    
-    # Move the window to that position...
-    [Void][Window]::MoveWindow($windowHandle, $x, $y, $width, $height, $True)
-    Invoke-WPFTab "WPFTab1BT"
-    $sync["Form"].Focus()
-})
-
+# $sync["Form"].Add_Loaded({
+#    
+#     $downloadUrl = "https://christitus.com/images/logo-full.png"
+#     $destinationPath = Join-Path $env:TEMP "cttlogo.png"
+#     
+#     # Check if the file already exists
+#     if (-not (Test-Path $destinationPath)) {
+#         # File does not exist, download it
+#         $wc = New-Object System.Net.WebClient
+#         $wc.DownloadFile($downloadUrl, $destinationPath)
+#         Write-Output "File downloaded to: $destinationPath"
+#     } else {
+#         Write-Output "File already exists at: $destinationPath"
+#     }
+#     $sync["Form"].Icon = $destinationPath
+# 
+#     Try { 
+#         [Void][Window]
+#     } Catch {
+#         Add-Type @"
+#         using System;
+#         using System.Runtime.InteropServices;
+#         public class Window {
+#             [DllImport("user32.dll")]
+#             [return: MarshalAs(UnmanagedType.Bool)]
+#             public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+#             [DllImport("user32.dll")]
+#             [return: MarshalAs(UnmanagedType.Bool)]
+#             public static extern bool MoveWindow(IntPtr handle, int x, int y, int width, int height, bool redraw);
+#             [DllImport("user32.dll")]
+#             [return: MarshalAs(UnmanagedType.Bool)]
+#             public static extern bool ShowWindow(IntPtr handle, int state);
+#         }
+#         public struct RECT {
+#             public int Left;   // x position of upper-left corner
+#             public int Top;    // y position of upper-left corner
+#             public int Right;  // x position of lower-right corner
+#             public int Bottom; // y position of lower-right corner
+#         }
+# "@
+#     }
+#     
+#     $processId  = [System.Diagnostics.Process]::GetCurrentProcess().Id
+#     $windowHandle  = (Get-Process -Id $processId).MainWindowHandle
+#     $rect = New-Object RECT
+#     [Void][Window]::GetWindowRect($windowHandle,[ref]$rect)
+#     
+#     # only snap upper edge don't move left to right, in case people have multimon setup
+#     $x = $rect.Left
+#     $y = 0
+#     $width  = $rect.Right  - $rect.Left
+#     $height = $rect.Bottom - $rect.Top
+#     
+#     # Move the window to that position...
+#     [Void][Window]::MoveWindow($windowHandle, $x, $y, $width, $height, $True)
+#     Invoke-WPFTab "WPFTab1BT"
+#     $sync["Form"].Focus()
+# })
+# 
 $sync["CheckboxFilter"].Add_TextChanged({
     #Write-host $sync.CheckboxFilter.Text
 
@@ -4592,16 +4592,16 @@ $sync["CheckboxFilter"].Add_TextChanged({
 
 # $downloadUrl = "https://christitus.com/images/logo-full.png"
 # $destinationPath = Join-Path $env:TEMP "cttlogo.png"
-
+# 
 # Check if the file already exists
-if (-not (Test-Path $destinationPath)) {
-    # File does not exist, download it
-    $wc = New-Object System.Net.WebClient
-    $wc.DownloadFile($downloadUrl, $destinationPath)
-    Write-Output "File downloaded to: $destinationPath"
-} else {
-    Write-Output "File already exists at: $destinationPath"
-}
+# if (-not (Test-Path $destinationPath)) {
+#     # File does not exist, download it
+#     $wc = New-Object System.Net.WebClient
+#     $wc.DownloadFile($downloadUrl, $destinationPath)
+#     Write-Output "File downloaded to: $destinationPath"
+# } else {
+#     Write-Output "File already exists at: $destinationPath"
+# }
 
 # show current windowsd Product ID
 #Write-Host "Your Windows Product Key: $((Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey)"
