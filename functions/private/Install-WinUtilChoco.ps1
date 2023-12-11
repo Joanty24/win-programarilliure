@@ -19,6 +19,9 @@ function Install-WinUtilChoco {
         Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -ErrorAction Stop
         powershell choco feature enable -n allowGlobalConfirmation
 
+        # Install winget with choco
+        Start-Process -FilePath "choco" -ArgumentList "install winget -y" -NoNewWindow -Wait
+
     }
     Catch {
         Write-Host "==========================================="

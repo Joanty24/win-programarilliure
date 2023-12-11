@@ -144,7 +144,7 @@ Invoke-WPFFormVariables
 # Check if Chocolatey is installed
 Install-WinUtilChoco
 # Install Winget with Choco
-Invoke-WPFFixesWinget
+# Invoke-WPFFixesWinget
 # Set the titlebar
 $sync["Form"].title = $sync["Form"].title + " " + $sync.version
 # Set the commands that will run when the form is closed

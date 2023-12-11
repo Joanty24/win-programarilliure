@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231211_1916
+    Version        : 231211_1926
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -20,7 +20,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # Variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231211_1916"
+$sync.version = "231211_1926"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -388,6 +388,9 @@ function Install-WinUtilChoco {
         Write-Host "Seems Chocolatey is not installed, installing now"
         Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -ErrorAction Stop
         powershell choco feature enable -n allowGlobalConfirmation
+
+        # Install winget with choco
+        Start-Process -FilePath "choco" -ArgumentList "install winget -y" -NoNewWindow -Wait
 
     }
     Catch {
@@ -3535,7 +3538,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
         mc:Ignorable="d"
         Background="{MainBackgroundColor}"
         WindowStartupLocation="CenterScreen"
-        Title="Instal.lador de programari lliure" Height="800" Width="1200">
+        Title="Instal.lador de programari lliure" Height="550" Width="1200">
 
     <Window.Resources>
     <!--Scrollbar Thumbs-->
@@ -3975,7 +3978,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
+                <!--<DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
                     <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
                         Background="{ButtonInstallBackgroundColor}" Foreground="white" FontWeight="Bold" Name="WPFTab1BT">
                         <ToggleButton.Content>
@@ -3984,7 +3987,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                             </TextBlock>
                         </ToggleButton.Content>
                     </ToggleButton>
-                </DockPanel>
+                </DockPanel>-->
                 <ScrollViewer Grid.Row="1" Padding="-1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="Transparent">
                 <TabControl Name="WPFTabNav" Background="#222222" Width="Auto" Height="Auto">
                     <TabItem Header="Install" Visibility="Collapsed" Name="WPFTab1">
@@ -4009,7 +4012,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                                 <Button Name="WPFGetInstalled" Content=" Seleccionar instal.lats " Margin="5"/>
                                 <Button Name="WPFclearWinget" Content=" Esclarir seleccio " Margin="5"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="3" Grid.ColumnSpan="2" Margin="5">
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2" Margin="5">
                                 <Button Name="WPFimportWinget" Content=" Importar seleccio " Margin="5"/>
                                 <Button Name="WPFexportWinget" Content=" Exportar seleccio " Margin="5"/>
                             </StackPanel>
@@ -4417,7 +4420,7 @@ Invoke-WPFFormVariables
 # Check if Chocolatey is installed
 Install-WinUtilChoco
 # Install Winget with Choco
-Invoke-WPFFixesWinget
+# Invoke-WPFFixesWinget
 # Set the titlebar
 $sync["Form"].title = $sync["Form"].title + " " + $sync.version
 # Set the commands that will run when the form is closed
