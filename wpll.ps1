@@ -8,7 +8,7 @@
 <#
 .NOTES
     GitHub         : https://github.com/Joanty24/win-programarilliure
-    Version        : 231211_1855
+    Version        : 231211_1916
 #>
 
 Start-Transcript $ENV:TEMP\Winutil.log -Append
@@ -20,7 +20,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # Variable to sync between runspaces
 $sync = [Hashtable]::Synchronized(@{})
 $sync.PSScriptRoot = $PSScriptRoot
-$sync.version = "231211_1855"
+$sync.version = "231211_1916"
 $sync.configs = @{}
 $sync.ProcessRunning = $false
 
@@ -3535,7 +3535,7 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
         mc:Ignorable="d"
         Background="{MainBackgroundColor}"
         WindowStartupLocation="CenterScreen"
-        Title="Chris Titus Tech''s Windows Utility" Height="800" Width="1200">
+        Title="Instal.lador de programari lliure" Height="800" Width="1200">
 
     <Window.Resources>
     <!--Scrollbar Thumbs-->
@@ -3976,50 +3976,14 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <DockPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="0" Width="1100">
-                    <Image Height="50" Width="50" Name="WPFIcon" SnapsToDevicePixels="True" Source="https://christitus.com/images/logo-full.png" Margin="0,10,0,10"/>
                     <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
                         Background="{ButtonInstallBackgroundColor}" Foreground="white" FontWeight="Bold" Name="WPFTab1BT">
                         <ToggleButton.Content>
                             <TextBlock Background="Transparent" Foreground="{ButtonInstallForegroundColor}" >
-                                <Underline>I</Underline>nstall
+                                <Underline>I</Underline>nstal.lador
                             </TextBlock>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
-                        Background="{ButtonTweaksBackgroundColor}" Foreground="{ButtonTweaksForegroundColor}" FontWeight="Bold" Name="WPFTab2BT">
-                        <ToggleButton.Content>
-                            <TextBlock Background="Transparent" Foreground="{ButtonTweaksForegroundColor}">
-                                <Underline>T</Underline>weaks
-                            </TextBlock>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
-                        Background="{ButtonConfigBackgroundColor}" Foreground="{ButtonConfigForegroundColor}" FontWeight="Bold" Name="WPFTab3BT">
-                        <ToggleButton.Content>
-                            <TextBlock Background="Transparent" Foreground="{ButtonConfigForegroundColor}">
-                                <Underline>C</Underline>onfig
-                            </TextBlock>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
-                        Background="{ButtonUpdatesBackgroundColor}" Foreground="{ButtonUpdatesForegroundColor}" FontWeight="Bold" Name="WPFTab4BT">
-                        <ToggleButton.Content>
-                            <TextBlock Background="Transparent" Foreground="{ButtonUpdatesForegroundColor}">
-                                <Underline>U</Underline>pdates
-                            </TextBlock>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <ToggleButton HorizontalAlignment="Left" Height="40" Width="100"
-                        Background="{ButtonUpdatesBackgroundColor}" Foreground="{ButtonUpdatesForegroundColor}" FontWeight="Bold" Name="WPFTab5BT">
-                        <ToggleButton.Content>
-                            <TextBlock Background="Transparent" Foreground="{ButtonUpdatesForegroundColor}">
-                                <Underline>M</Underline>icroWin
-                            </TextBlock>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <TextBox VerticalContentAlignment="Center" HorizontalAlignment="Right" Name="CheckboxFilter" ToolTip="Press Ctrl-F and type app name to filter application list below. Press Esc to reset the filter"
-                        Height="25" Width="200" 
-                        Foreground="{MainForegroundColor}" Background="{MainBackgroundColor}">Ctrl-F to filter</TextBox>
                 </DockPanel>
                 <ScrollViewer Grid.Row="1" Padding="-1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="Transparent">
                 <TabControl Name="WPFTabNav" Background="#222222" Width="Auto" Height="Auto">
@@ -4037,18 +4001,17 @@ $inputXML = '<Window x:Class="WinUtility.MainWindow"
                                 <RowDefinition Height=".90*"/>
                             </Grid.RowDefinitions>
 
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3" Margin="10">
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
                                 <Label Content="Winget:" FontSize="17" VerticalAlignment="Center"/>
-                                <Button Name="WPFinstall" Content=" Install Selection " Margin="7"/>
-                                <Button Name="WPFInstallUpgrade" Content=" Upgrade All " Margin="7"/>
-                                <Button Name="WPFuninstall" Content=" Uninstall Selection " Margin="7"/>
-                                <Button Name="WPFGetInstalled" Content=" Get Installed " Margin="7"/>
-                                <Button Name="WPFclearWinget" Content=" Clear Selection " Margin="7"/>
+                                <Button Name="WPFinstall" Content=" Instal.lar seleccio " Margin="5"/>
+                                <Button Name="WPFInstallUpgrade" Content=" Actualitzar tot " Margin="5"/>
+                                <Button Name="WPFuninstall" Content=" Desinstal.lar seleccio " Margin="5"/>
+                                <Button Name="WPFGetInstalled" Content=" Seleccionar instal.lats " Margin="5"/>
+                                <Button Name="WPFclearWinget" Content=" Esclarir seleccio " Margin="5"/>
                             </StackPanel>
-                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="3" Grid.ColumnSpan="2" Margin="10">
-                                <Label Content="Configuration File:" FontSize="17" VerticalAlignment="Center"/>
-                                <Button Name="WPFimportWinget" Content=" Import " Margin="7"/>
-                                <Button Name="WPFexportWinget" Content=" Export " Margin="7"/>
+                            <StackPanel Background="{MainBackgroundColor}" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Grid.Column="3" Grid.ColumnSpan="2" Margin="5">
+                                <Button Name="WPFimportWinget" Content=" Importar seleccio " Margin="5"/>
+                                <Button Name="WPFexportWinget" Content=" Exportar seleccio " Margin="5"/>
                             </StackPanel>
                             <StackPanel Background="{MainBackgroundColor}" SnapsToDevicePixels="True" Grid.Row="1" Grid.Column="0" Margin="5">
                                 <Label Content="Navegadors" FontSize="16" Margin="5,0"/>
